@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Francisca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300&family=Hanken+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e8ecef;--ink:#a5adb8;--soft:#5d6b78;--amber:#b9792b;--card:#dde3e8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141a21;--ink:#eef1f3;--soft:#9aa7b3;--amber:#e0a14f;--card:#1e262f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#697582;--ink:#eef1f3;--soft:#9aa7b3;--amber:#e0a14f;--card:#1e262f;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.6 "Hanken Grotesk",system-ui,sans-serif}
+.hero{display:grid;grid-template-columns:1.1fr 1fr;min-height:100vh;align-items:center;gap:2rem;padding:clamp(1.25rem,5vw,4rem);max-width:1300px;margin:auto}
+.hero h1{font:300 clamp(4rem,15vw,11rem)/.85 "Fraunces",Georgia,serif;letter-spacing:-.04em;margin:0 0 1.5rem;position:relative;z-index:2}
+.hero p{max-width:32ch;color:var(--soft);font-size:1.1rem;margin:0 0 2rem}
+.hero a{display:inline-block;color:var(--ink);border-bottom:2px solid var(--amber);padding-bottom:.2rem;text-decoration:none;font-weight:500}
+.hero a:focus-visible,.g button:focus-visible,.lb button:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+.hero figure{margin:0;aspect-ratio:3/4;overflow:hidden;border-radius:46% 46% 4px 4px/30% 30% 4px 4px;background:var(--card)}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.hero .name{margin-right:-18%}
+.gal{max-width:1300px;margin:auto;padding:2rem clamp(1.25rem,5vw,4rem) 5rem}
+.gal h2{font:300 clamp(1.8rem,4vw,3rem)/1.1 "Fraunces",Georgia,serif;margin:0 0 2rem;letter-spacing:-.02em}
+.g{display:grid;grid-template-columns:repeat(6,1fr);gap:1rem}
+.g button{all:unset;cursor:zoom-in;overflow:hidden;background:var(--card);grid-column:span 2;aspect-ratio:3/4;display:block}
+.g button:nth-child(1){grid-column:span 3;aspect-ratio:4/5}
+.g button:nth-child(2){grid-column:span 3;aspect-ratio:4/5}
+.g img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.g button:hover img{transform:scale(1.04)}
+footer{padding:2rem clamp(1.25rem,5vw,4rem) 3rem;color:var(--soft);font-size:.9rem;text-align:center}
+.lb{position:fixed;inset:0;background:rgba(10,14,18,.94);display:none;align-items:center;justify-content:center;z-index:20;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+.lb.on{display:flex}
+.lb img{max-width:92vw;max-height:86vh;object-fit:contain}
+.lb button{position:absolute;background:none;border:0;color:#fff;font-size:2.4rem;cursor:pointer;padding:1rem;line-height:1}
+.lb .x{top:calc(env(safe-area-inset-top,0px) + .5rem);right:.5rem}.lb .p{left:.25rem}.lb .n{right:.25rem}
+@media (max-width:760px){.hero{grid-template-columns:1fr;min-height:0;padding-top:2rem}.hero .name{margin-right:0}.hero figure{order:-1}.g button,.g button:nth-child(n){grid-column:span 3;aspect-ratio:3/4}.g button:nth-child(1){grid-column:span 6}}
+@media (prefers-reduced-motion:reduce){.g img{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<section class="hero">
+  <div class="name">
+    <h1>Francisca</h1>
+    <p>A famosa mulher feminina.</p>
+    <p>Do seu dramatico para ti </p>
+    <a href="#galeria">Ver as fotos</a>
+  </div>
+  <figure><img id="hero" alt="Retrato de Francisca"></figure>
+</section>
+<section class="gal" id="galeria">
+  <h2>Galeria</h2>
+  <div class="g" id="g"></div>
+</section>
+</main>
+<footer>© Francisca</footer>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Foto ampliada">
+  <button class="x" aria-label="Fechar">×</button>
+  <button class="p" aria-label="Foto anterior">‹</button>
+  <img id="big" alt="">
+  <button class="n" aria-label="Foto seguinte">›</button>
+</div>
+<script>
+const P=["fotos/foto1.jpg", "fotos/foto2.jpg", "fotos/foto3.jpg", "fotos/foto4.jpg", "fotos/foto5.jpg", "fotos/foto6.jpg"];
+document.getElementById('hero').src=P[0];
+const g=document.getElementById('g'),lb=document.getElementById('lb'),big=document.getElementById('big');
+let cur=0;
+P.forEach((s,i)=>{const b=document.createElement('button');b.setAttribute('aria-label','Ampliar foto '+(i+1));const im=new Image();im.src=s;im.alt='Francisca, foto '+(i+1);im.loading='lazy';b.append(im);b.onclick=()=>show(i);g.append(b)});
+function show(i){cur=(i+P.length)%P.length;big.src=P[cur];big.alt='Francisca, foto '+(cur+1);lb.classList.add('on')}
+lb.querySelector('.x').onclick=()=>lb.classList.remove('on');
+lb.querySelector('.p').onclick=()=>show(cur-1);
+lb.querySelector('.n').onclick=()=>show(cur+1);
+lb.onclick=e=>{if(e.target===lb)lb.classList.remove('on')};
+addEventListener('keydown',e=>{if(!lb.classList.contains('on'))return;if(e.key==='Escape')lb.classList.remove('on');if(e.key==='ArrowLeft')show(cur-1);if(e.key==='ArrowRight')show(cur+1)});
+</script>
+</body>
+</html>
