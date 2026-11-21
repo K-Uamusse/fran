@@ -7,73 +7,148 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300&family=Hanken+Grotesk:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#e8ecef;--ink:#a5adb8;--soft:#5d6b78;--amber:#b9792b;--card:#dde3e8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+:root{--bg:#e8ecef;--ink:#1c2530;--soft:#5d6b78;--amber:#b9792b;--card:#dde3e8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141a21;--ink:#eef1f3;--soft:#9aa7b3;--amber:#e0a14f;--card:#1e262f;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#697582;--ink:#eef1f3;--soft:#9aa7b3;--amber:#e0a14f;--card:#1e262f;color-scheme:dark}
+:root[data-theme="dark"]{--bg:#141a21;--ink:#eef1f3;--soft:#9aa7b3;--amber:#e0a14f;--card:#1e262f;color-scheme:dark}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.6 "Hanken Grotesk",system-ui,sans-serif}
+
+/* Abertura */
 .hero{display:grid;grid-template-columns:1.1fr 1fr;min-height:100vh;align-items:center;gap:2rem;padding:clamp(1.25rem,5vw,4rem);max-width:1300px;margin:auto}
 .hero h1{font:300 clamp(4rem,15vw,11rem)/.85 "Fraunces",Georgia,serif;letter-spacing:-.04em;margin:0 0 1.5rem;position:relative;z-index:2}
 .hero p{max-width:32ch;color:var(--soft);font-size:1.1rem;margin:0 0 2rem}
 .hero a{display:inline-block;color:var(--ink);border-bottom:2px solid var(--amber);padding-bottom:.2rem;text-decoration:none;font-weight:500}
-.hero a:focus-visible,.g button:focus-visible,.lb button:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+.hero a:focus-visible,.lb button:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
 .hero figure{margin:0;aspect-ratio:3/4;overflow:hidden;border-radius:46% 46% 4px 4px/30% 30% 4px 4px;background:var(--card)}
 .hero img{width:100%;height:100%;object-fit:cover;display:block}
 .hero .name{margin-right:-18%}
+
+/* Galeria */
 .gal{max-width:1300px;margin:auto;padding:2rem clamp(1.25rem,5vw,4rem) 5rem}
-.gal h2{font:300 clamp(1.8rem,4vw,3rem)/1.1 "Fraunces",Georgia,serif;margin:0 0 2rem;letter-spacing:-.02em}
+.gh{display:flex;justify-content:space-between;align-items:end;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
+.gh h2{margin:0;font:300 clamp(1.8rem,4vw,3rem)/1.1 "Fraunces",Georgia,serif;letter-spacing:-.02em}
+.add{background:var(--ink);color:var(--bg);border:0;border-radius:99px;padding:.7rem 1.4rem;font:500 .95rem "Hanken Grotesk",sans-serif;cursor:pointer}
+.add:focus-visible,.del:focus-visible,.g .open:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+.note{color:var(--soft);font-size:.85rem;margin:-1rem 0 1.5rem}
 .g{display:grid;grid-template-columns:repeat(6,1fr);gap:1rem}
-.g button{all:unset;cursor:zoom-in;overflow:hidden;background:var(--card);grid-column:span 2;aspect-ratio:3/4;display:block}
-.g button:nth-child(1){grid-column:span 3;aspect-ratio:4/5}
-.g button:nth-child(2){grid-column:span 3;aspect-ratio:4/5}
-.g img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
-.g button:hover img{transform:scale(1.04)}
+.it{position:relative;overflow:hidden;background:var(--card);grid-column:span 2;aspect-ratio:3/4}
+.it:nth-child(-n+2){grid-column:span 3;aspect-ratio:4/5}
+.it .open{all:unset;cursor:zoom-in;display:block;width:100%;height:100%}
+.it img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.it:hover img{transform:scale(1.04)}
+.del{position:absolute;top:.5rem;right:.5rem;width:2rem;height:2rem;border-radius:50%;border:0;background:rgba(10,14,18,.7);color:#fff;font-size:1.2rem;line-height:1;cursor:pointer}
+
 footer{padding:2rem clamp(1.25rem,5vw,4rem) 3rem;color:var(--soft);font-size:.9rem;text-align:center}
+
+/* Foto ampliada */
 .lb{position:fixed;inset:0;background:rgba(10,14,18,.94);display:none;align-items:center;justify-content:center;z-index:20;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
 .lb.on{display:flex}
 .lb img{max-width:92vw;max-height:86vh;object-fit:contain}
 .lb button{position:absolute;background:none;border:0;color:#fff;font-size:2.4rem;cursor:pointer;padding:1rem;line-height:1}
-.lb .x{top:calc(env(safe-area-inset-top,0px) + .5rem);right:.5rem}.lb .p{left:.25rem}.lb .n{right:.25rem}
-@media (max-width:760px){.hero{grid-template-columns:1fr;min-height:0;padding-top:2rem}.hero .name{margin-right:0}.hero figure{order:-1}.g button,.g button:nth-child(n){grid-column:span 3;aspect-ratio:3/4}.g button:nth-child(1){grid-column:span 6}}
-@media (prefers-reduced-motion:reduce){.g img{transition:none}}
+.lb .x{top:calc(env(safe-area-inset-top,0px) + .5rem);right:.5rem}
+.lb .p{left:.25rem}
+.lb .n{right:.25rem}
+
+/* Telemóvel */
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr;min-height:0;padding-top:2rem}
+  .hero .name{margin-right:0}
+  .hero figure{order:-1}
+  .it,.it:nth-child(n){grid-column:span 3;aspect-ratio:3/4}
+  .it:nth-child(1){grid-column:span 6}
+}
+@media (prefers-reduced-motion:reduce){.it img{transition:none}}
 </style>
 </head>
 <body>
 <main>
-<section class="hero">
-  <div class="name">
-    <h1>Francisca</h1>
-    <p>A famosa mulher feminina.</p>
-    <p>Do seu dramatico para ti </p>
-    <a href="#galeria">Ver as fotos</a>
-  </div>
-  <figure><img id="hero" alt="Retrato de Francisca"></figure>
-</section>
-<section class="gal" id="galeria">
-  <h2>Galeria</h2>
-  <div class="g" id="g"></div>
-</section>
+  <section class="hero">
+    <div class="name">
+      <h1>Francisca</h1>
+      <p>Luz de fim de tarde, tranças cor de mel e mármore azul.</p>
+      <a href="#galeria">Ver as fotos</a>
+    </div>
+    <figure><img id="hero" alt="Retrato de Francisca"></figure>
+  </section>
+
+  <section class="gal" id="galeria">
+    <div class="gh">
+      <h2>Galeria</h2>
+      <button class="add" id="add" type="button">+ Adicionar fotos</button>
+      <input type="file" id="file" accept="image/*" multiple hidden>
+    </div>
+    <p class="note" id="note" hidden></p>
+    <div class="g" id="g"></div>
+  </section>
 </main>
+
 <footer>© Francisca</footer>
+
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Foto ampliada">
   <button class="x" aria-label="Fechar">×</button>
   <button class="p" aria-label="Foto anterior">‹</button>
   <img id="big" alt="">
   <button class="n" aria-label="Foto seguinte">›</button>
 </div>
+
 <script>
-const P=["fotos/foto1.jpg", "fotos/foto2.jpg", "fotos/foto3.jpg", "fotos/foto4.jpg", "fotos/foto5.jpg", "fotos/foto6.jpg"];
-document.getElementById('hero').src=P[0];
-const g=document.getElementById('g'),lb=document.getElementById('lb'),big=document.getElementById('big');
-let cur=0;
-P.forEach((s,i)=>{const b=document.createElement('button');b.setAttribute('aria-label','Ampliar foto '+(i+1));const im=new Image();im.src=s;im.alt='Francisca, foto '+(i+1);im.loading='lazy';b.append(im);b.onclick=()=>show(i);g.append(b)});
-function show(i){cur=(i+P.length)%P.length;big.src=P[cur];big.alt='Francisca, foto '+(cur+1);lb.classList.add('on')}
+const BASE=["fotos/foto1.jpg","fotos/foto2.jpg","fotos/foto3.jpg","fotos/foto4.jpg","fotos/foto5.jpg","fotos/foto6.jpg"];
+let extra=[],cur=0,db=null;
+const $=id=>document.getElementById(id);
+const g=$('g'),lb=$('lb'),big=$('big'),note=$('note');
+$('hero').src=BASE[0];
+const all=()=>BASE.concat(extra.map(e=>e.src));
+function say(m){note.textContent=m;note.hidden=!m}
+
+/* Guardar no navegador (IndexedDB) */
+function idb(){return new Promise((ok,no)=>{try{const r=indexedDB.open('francisca-galeria',1);r.onupgradeneeded=()=>r.result.createObjectStore('fotos',{keyPath:'id',autoIncrement:true});r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}catch(e){no(e)}})}
+function tx(mode,fn){return new Promise((ok,no)=>{try{const t=db.transaction('fotos',mode),s=t.objectStore('fotos'),q=fn(s);t.oncomplete=()=>ok(q&&q.result);t.onerror=()=>no(t.error)}catch(e){no(e)}})}
+
+/* Desenhar a galeria */
+function render(){
+  g.textContent='';
+  const P=all();
+  P.forEach((s,i)=>{
+    const d=document.createElement('div');d.className='it';
+    const b=document.createElement('button');b.className='open';b.type='button';b.setAttribute('aria-label','Ampliar foto '+(i+1));
+    const im=new Image();im.src=s;im.alt='Francisca, foto '+(i+1);im.loading='lazy';b.append(im);b.onclick=()=>show(i);d.append(b);
+    if(i>=BASE.length){const x=document.createElement('button');x.className='del';x.type='button';x.textContent='×';x.setAttribute('aria-label','Remover foto');x.onclick=()=>remove(extra[i-BASE.length]);d.append(x)}
+    g.append(d)});
+}
+
+/* Reduzir a foto antes de guardar */
+function resize(file){return new Promise((ok,no)=>{const u=URL.createObjectURL(file),im=new Image();im.onload=()=>{const k=Math.min(1,1200/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c.toDataURL('image/jpeg',.82))};im.onerror=()=>{URL.revokeObjectURL(u);no(new Error('img'))};im.src=u})}
+
+/* Remover foto adicionada */
+async function remove(e){
+  extra=extra.filter(x=>x!==e);
+  try{if(db&&e.id!=null)await tx('readwrite',s=>s.delete(e.id))}catch(_){}
+  render()}
+
+/* Adicionar fotos */
+$('add').onclick=()=>$('file').click();
+$('file').onchange=async ev=>{
+  const files=[...ev.target.files].filter(f=>f.type.startsWith('image/'));ev.target.value='';
+  let saved=true;
+  for(const f of files){
+    try{const src=await resize(f),item={src};
+      try{if(db){item.id=await tx('readwrite',s=>s.add({src}))}else saved=false}catch(_){saved=false}
+      extra.push(item)}catch(_){}}
+  render();
+  say(saved?'As fotos adicionadas ficam guardadas só neste navegador.':'As fotos aparecem agora, mas não foi possível guardá-las neste navegador.')};
+
+/* Foto ampliada */
+function show(i){const P=all();cur=(i+P.length)%P.length;big.src=P[cur];big.alt='Francisca, foto '+(cur+1);lb.classList.add('on')}
 lb.querySelector('.x').onclick=()=>lb.classList.remove('on');
 lb.querySelector('.p').onclick=()=>show(cur-1);
 lb.querySelector('.n').onclick=()=>show(cur+1);
 lb.onclick=e=>{if(e.target===lb)lb.classList.remove('on')};
 addEventListener('keydown',e=>{if(!lb.classList.contains('on'))return;if(e.key==='Escape')lb.classList.remove('on');if(e.key==='ArrowLeft')show(cur-1);if(e.key==='ArrowRight')show(cur+1)});
+
+/* Arranque */
+render();
+(async()=>{try{db=await idb();const rows=await tx('readonly',s=>s.getAll());extra=(rows||[]).map(r=>({id:r.id,src:r.src}));if(extra.length){render();say('As fotos adicionadas ficam guardadas só neste navegador.')}}catch(_){db=null}})();
 </script>
 </body>
 </html>
