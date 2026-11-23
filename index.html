@@ -62,35 +62,7 @@ footer{padding:2rem clamp(1.25rem,5vw,4rem) 3rem;color:var(--soft);font-size:.9r
   <p class="note" id="note" hidden></p>
   <div class="g" id="g"></div>
 </section>
-=======
-  <section class="hero">
-    <div class="name">
-      <h1>Francisca</h1>
-   
-      <a href="#galeria">Ver as fotos</a>
-    </div>
-    <figure><img id="hero" alt="Retrato de Francisca"></figure>
-  </section>
 
-  <section class="gal" id="galeria">
-    <div class="gh">
-      <h2>Galeria</h2>
-      <button class="add" id="add" type="button">+ Adicionar fotos</button>
-      <input type="file" id="file" accept="image/*" multiple hidden>
-    </div>
-    <p class="note" id="note" hidden></p>
-    <div class="g" id="g"></div>
-  </section>
->>>>>>> cc9234a14f8b147e0a97206fb51ff276d6c69057
-</main>
-<footer>© Francisca</footer>
-
-<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Foto ampliada">
-  <button class="x" aria-label="Fechar">×</button>
-  <button class="p" aria-label="Foto anterior">‹</button>
-  <img id="big" alt="">
-  <button class="n" aria-label="Foto seguinte">›</button>
-</div>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getFirestore,collection,addDoc,deleteDoc,doc,onSnapshot,query,orderBy,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
