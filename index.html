@@ -43,16 +43,23 @@ footer{padding:2rem clamp(1.25rem,5vw,4rem) 3rem;color:var(--soft);font-size:.9r
 .lb .x{top:calc(env(safe-area-inset-top,0px) + .5rem);right:.5rem}.lb .p{left:.25rem}.lb .n{right:.25rem}
 @media (max-width:760px){.hero{grid-template-columns:1fr;min-height:0;padding-top:2rem}.hero .name{margin-right:0}.hero figure{order:-1}.it,.it:nth-child(n){grid-column:span 3;aspect-ratio:3/4}.it:nth-child(1){grid-column:span 6}}
 @media (prefers-reduced-motion:reduce){.it img{transition:none}}
+
+.lnk{background:none;border:0;color:var(--soft);font:inherit;text-decoration:underline;cursor:pointer;padding:0}
+dialog{border:0;border-radius:16px;background:var(--bg);color:var(--ink);padding:1.5rem;width:min(90vw,22rem)}
+dialog::backdrop{background:rgba(10,14,18,.6)}
+dialog h3{margin:0 0 1rem;font:300 1.6rem "Fraunces",Georgia,serif}
+dialog label{display:block;margin-bottom:.8rem;font-size:.9rem;color:var(--soft)}
+dialog input{display:block;width:100%;margin-top:.25rem;padding:.6rem;border:1px solid var(--soft);border-radius:8px;background:var(--card);color:var(--ink);font:inherit}
+dialog .row{display:flex;justify-content:space-between;align-items:center;margin-top:1rem}
 </style>
 </head>
 <body>
 <main>
-
 <section class="hero">
   <div class="name">
     <h1>Francisca</h1>
     <p>A famosa mulher feminina.</p>
-    <p>Do seu dramatico para ti</p>
+    <p>Do seu dramatico para ti.</p>
     <a href="#galeria">Ver as fotos</a>
   </div>
   <figure><img id="hero" alt="Retrato de Francisca"></figure>
@@ -62,7 +69,15 @@ footer{padding:2rem clamp(1.25rem,5vw,4rem) 3rem;color:var(--soft);font-size:.9r
   <p class="note" id="note" hidden></p>
   <div class="g" id="g"></div>
 </section>
+</main>
+<footer>© Francisca</footer>
 
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Foto ampliada">
+  <button class="x" aria-label="Fechar">×</button>
+  <button class="p" aria-label="Foto anterior">‹</button>
+  <img id="big" alt="">
+  <button class="n" aria-label="Foto seguinte">›</button>
+</div>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getFirestore,collection,addDoc,deleteDoc,doc,onSnapshot,query,orderBy,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
