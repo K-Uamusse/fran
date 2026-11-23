@@ -82,7 +82,6 @@ dialog .row{display:flex;justify-content:space-between;align-items:center;margin
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getFirestore,collection,addDoc,deleteDoc,doc,onSnapshot,query,orderBy,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import {getAuth,signInAnonymously,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 /* 1) COLE AQUI a configuração do seu projeto Firebase */
 const firebaseConfig={apiKey:"AIzaSyDspmHiTb1MvVJsieEFTyVtUzVSlTUJy-M",authDomain:"fran-43a4f.firebaseapp.com",projectId:"fran-43a4f",appId:"1:252607850672:web:a8baa521ca34086f69b375"};
@@ -90,7 +89,7 @@ const firebaseConfig={apiKey:"AIzaSyDspmHiTb1MvVJsieEFTyVtUzVSlTUJy-M",authDomai
 const BASE=["fotos/foto1.jpg","fotos/foto2.jpg","fotos/foto3.jpg","fotos/foto4.jpg","fotos/foto5.jpg","fotos/foto6.jpg"].map(src=>({src}));
 const $=id=>document.getElementById(id);
 const g=$('g'),lb=$('lb'),big=$('big'),note=$('note'),addBtn=$('add');
-let remote=[],cur=0,db=null,uid=null,armed=null;
+let remote=[],cur=0,db=null;
 const all=()=>BASE.concat(remote);
 function say(m){note.textContent=m;note.hidden=!m}
 $('hero').src=BASE[0].src;
@@ -101,8 +100,6 @@ function render(){
     const d=document.createElement('div');d.className='it';
     const b=document.createElement('button');b.className='open';b.type='button';b.setAttribute('aria-label','Ampliar foto '+(i+1));
     const im=new Image();im.src=p.src;im.alt='Francisca, foto '+(i+1);im.loading='lazy';b.append(im);b.onclick=()=>show(i);d.append(b);
-    if(uid&&p.dono===uid){const x=document.createElement('button');x.className='del';x.type='button';x.textContent='×';x.setAttribute('aria-label','Remover foto');
-      x.onclick=async()=>{if(armed===p.id){armed=null;try{await deleteDoc(doc(db,'fotos',p.id));say('Foto removida.')}catch(e){say('Não foi possível remover a foto.')}}else{armed=p.id;x.textContent='Apagar?';x.style.width='auto';x.style.padding='0 .7rem';x.style.borderRadius='99px';x.style.fontSize='.8rem'}};d.append(x)}
     g.append(d)});
 }
 function show(i){const P=all();cur=(i+P.length)%P.length;big.src=P[cur].src;big.alt='Francisca, foto '+(cur+1);lb.classList.add('on')}
@@ -121,20 +118,17 @@ function resize(file){return new Promise((ok,no)=>{const u=URL.createObjectURL(f
 addBtn.onclick=()=>$('file').click();
 $('file').onchange=async ev=>{
   const files=[...ev.target.files].filter(f=>f.type.startsWith('image/'));ev.target.value='';
-  if(!files.length||!db||!uid)return;
+  if(!files.length||!db)return;
   let n=0;say('A enviar…');
-  for(const f of files){try{await addDoc(collection(db,'fotos'),{src:await resize(f),criado:serverTimestamp(),dono:uid});n++}catch(e){say(e&&e.code==='permission-denied'?'Sem permissão para adicionar fotos.':'Não foi possível enviar uma das fotos.')}}
+  for(const f of files){try{await addDoc(collection(db,'fotos'),{src:await resize(f),criado:serverTimestamp()});n++}catch(e){say(e&&e.code==='permission-denied'?'Sem permissão para adicionar fotos.':'Não foi possível enviar uma das fotos.')}}
   if(n)say(n+(n>1?' fotos adicionadas.':' foto adicionada.'))};
 
 render();
 if(firebaseConfig.apiKey.startsWith('COLE')){console.warn('Falta colar a configuração do Firebase.')}
 else{
-  const app=initializeApp(firebaseConfig);db=getFirestore(app);
-  const auth=getAuth(app);
-  onAuthStateChanged(auth,u=>{uid=u?u.uid:null;addBtn.hidden=!uid;render()});
-  signInAnonymously(auth).catch(()=>say('Não foi possível ativar o envio de fotos. Verifique o início de sessão anónimo no Firebase.'));
+  const app=initializeApp(firebaseConfig);db=getFirestore(app);addBtn.hidden=false;
   onSnapshot(collection(db,'fotos'),s=>{
-    remote=s.docs.map(d=>{const x=d.data(),t=x.criado&&x.criado.toMillis?x.criado.toMillis():Date.now();return {id:d.id,src:x.src,dono:x.dono,t}})
+    remote=s.docs.map(d=>{const x=d.data(),t=x.criado&&x.criado.toMillis?x.criado.toMillis():Date.now();return {src:x.src,t}})
       .filter(p=>typeof p.src==='string'&&p.src).sort((a,b)=>a.t-b.t);
     render()},e=>say('Não foi possível carregar as fotos partilhadas ('+(e&&e.code?e.code:'erro')+').'));
 }
